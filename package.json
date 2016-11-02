@@ -1,0 +1,30 @@
+{
+  "name": "jcdi",
+  "version": "1.0.0",
+  "description": "My own impplementation of DI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brion25/jcdi.git"
+  },
+  "keywords": [
+    "DI"
+  ],
+  "author": "JC Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brion25/jcdi/issues"
+  },
+  "homepage": "https://github.com/brion25/jcdi#readme",
+  "dependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-register": "^6.18.0"
+  },
+  "engines" : {
+    "node" : ">=7.0.0",
+    "npm" : ">=3.10.8"
+  }
+}
