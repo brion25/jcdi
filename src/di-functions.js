@@ -1,23 +1,27 @@
 import * as helpers from './di-helpers';
 
-const _dependencies = Symbol('dependencies');
+const _appDependencies = Symbol('dependencies');
 const EXTRACT_FUNC_PARAMS_REGEX = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
 const WHITE_SPACE_REGEX = /\s/g;
 
 export function initializeDependencies(){
-  this[_dependencies] = new Map();
+  this[_appDependencies] = new Map();
 }
+
 export function addDependency(dependency){
   if(helpers.validateDependency(typeof dependency, dependency)){
-    this[_dependencies].set(dependency.name, (dependency.hasOwnProperty('action')) ? dependency.action : dependency);
+    this[_appDependencies].set(dependency.name, (dependency.hasOwnProperty('action')) ? dependency.action : dependency);
   }
 }
+
 export function addDependencies(dependencies){
   dependencies.forEach((dependency) => this.addDependency(dependency));
 }
+
 export function getDependency(name){
-  return this[_dependencies].get(name);
+  return this[_appDependencies].get(name);
 }
+
 export function invoke(callback, context){
   let dependencies = null;
   if(Array.isArray(callback)){

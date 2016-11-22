@@ -1,6 +1,4 @@
-const Di = require('./../index.js');
-
-let di = new Di();
+const di = require('./../index.js');
 
 /**
  * Function dependency
@@ -25,11 +23,13 @@ di.addDependencies([true, 'Invalid', 25]);
 var minificationProof = di.invoke(['plus','minus',function(x,y){
   this.val = 35;
 
+  console.log('Minification proof');
   console.log(x(this.val,4));
   console.log(y(5,this.val));
 }]);
 
 var iFailInMinification = di.invoke(function(plus){
+  console.log('Minification fail');
   console.log(plus(5,5))
 });
 
