@@ -14,6 +14,7 @@
   "author": "JC Gomez",
   "license": "ISC",
   "devDependencies": {
+    "babel-loader": "^6.2.8",
     "hjs-webpack": "^8.4.2",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"

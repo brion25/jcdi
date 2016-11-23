@@ -17,4 +17,5 @@ export default new Di();
 
 export function initialize(appName) {
   _apps[appName] = new Di();
+  return _apps[appName];
 }

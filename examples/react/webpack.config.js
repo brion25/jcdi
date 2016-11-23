@@ -1,7 +1,9 @@
-var getConfig = require('hjs-webpack')
+var getConfig = require('hjs-webpack'),
+    path = require('path')
+
 var isDev = process.env.NODE_ENV !== 'production'
 
-module.exports = getConfig({
+const webpackConfig = getConfig({
   in: 'src/app.js',
   out: 'public',
   isDev: isDev,
@@ -11,3 +13,11 @@ module.exports = getConfig({
     contentBase: __dirname
   }
 });
+
+webpackConfig.resolve.alias = {
+  src : path.resolve(__dirname, '../../src')
+}
+
+
+
+module.exports = webpackConfig;

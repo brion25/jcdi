@@ -24,10 +24,17 @@ export function getDependency(name){
 
 export function invoke(callback, context){
   let dependencies = null;
+
+  if(!context) {
+    context = callback;
+  }
+
   if(Array.isArray(callback)){
     dependencies = callback;
     callback = callback.pop();
-    return () => callback.apply(context || callback,helpers.parseDependencies.call(this,dependencies));
+    return () => {
+      callback.apply(context, helpers.parseDependencies.call(this, dependencies, context))
+    };
   }else{
     let cbStringify = callback.toString(),
         params = EXTRACT_FUNC_PARAMS_REGEX.exec(cbStringify);
