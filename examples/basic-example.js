@@ -1,5 +1,6 @@
-const di = require('./../index.js');
+const Di = require('./../index.js');
 
+const di = new Di();
 /**
  * Function dependency
  */

@@ -1,7 +1,5 @@
 import * as functions from './di-functions';
 
-const _apps = {};
-
 class Di{
   constructor(){
     functions.initializeDependencies.call(this);
@@ -13,9 +11,4 @@ class Di{
   }
 }
 
-export default new Di();
-
-export function initialize(appName) {
-  _apps[appName] = new Di();
-  return _apps[appName];
-}
+export default Di;
