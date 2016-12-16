@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import app from './../di.js'
+import { invoke } from 'di';
 
 export default class Header extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ export default class Header extends Component {
       ip : ''
     }
 
-    this.getIP = app.invoke(['fetch', this.getIP], this)
+    this.getIP = invoke(['fetch', this.getIP], this)
   }
 
   getIP(fetch) {

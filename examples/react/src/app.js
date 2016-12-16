@@ -3,8 +3,10 @@ require('./scss/manifest.scss');
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import Header from './components/header';
-import Search from './components/search';
+import Header from 'components/header';
+import Search from 'components/search';
+
+import './di';
 
 class App extends Component {
   render() {

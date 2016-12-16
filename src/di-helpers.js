@@ -22,10 +22,10 @@ const TYPE_VALIDATION_STRATEGY = {
   }
 }
 
-export function parseDependencies(params, context){
+export function parseDependencies(params, getDependency, context){
   if(typeof params === 'string') params = params.split(',');
 
-  return params.map((param) => this.getDependency(param).bind(context));
+  return params.map((param) => getDependency(param).bind(context));
 }
 export function validateDependency(againstType, dependency){
   if(TYPE_VALIDATION_STRATEGY.hasOwnProperty(againstType)) return TYPE_VALIDATION_STRATEGY[againstType](dependency);

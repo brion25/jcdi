@@ -1,8 +1,6 @@
-import Di from 'src/di';
+import Di from 'di';
 
-const di = new Di();
-
-di.addDependency({
+Di.addDependency({
   name : 'fetch',
   action : function(url, options = { method : 'GET' }) {
     return fetch(url, options)
@@ -10,5 +8,3 @@ di.addDependency({
       .then(json => Promise.resolve(json))
   }
 })
-
-export default di;

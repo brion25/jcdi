@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import app from './../di.js'
+import { invoke } from 'di';
 
 export default class Search extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class Search extends Component {
     }
 
     this.getIp = this.getIp.bind(this)
-    this.getLocationBasedOnIP = app.invoke(['fetch', this.getLocationBasedOnIP], this)
+    this.getLocationBasedOnIP = invoke(['fetch', this.getLocationBasedOnIP], this)
   }
 
   getIp(event) {
