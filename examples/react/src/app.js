@@ -3,8 +3,8 @@ require('./scss/manifest.scss');
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-import Header from 'components/header';
-import Search from 'components/search';
+import Header from 'src/components/header';
+import Search from 'src/components/search';
 
 import './di';
 

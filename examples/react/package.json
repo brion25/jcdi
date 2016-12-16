@@ -6,7 +6,7 @@
   "scripts": {
     "start": "hjs-dev-server",
     "build": "node ./node_modules/webpack/bin/webpack.js",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --require shim-webpack.js \"test/**/*test.js\""
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --require shim-webpack.js --require test/test-setup.js \"test/**/*test.js\""
   },
   "keywords": [
     "react",
@@ -20,10 +20,14 @@
     "cross-env": "^3.1.3",
     "css-loader": "^0.26.0",
     "enzyme": "^2.6.0",
+    "fetch-mock": "^5.6.2",
     "hjs-webpack": "^8.4.2",
+    "jsdom": "^9.8.3",
+    "jsdom-global": "^2.1.0",
     "mocha": "^3.2.0",
     "node-sass": "^3.13.0",
     "postcss-loader": "^1.1.1",
+    "react-addons-test-utils": "^15.4.1",
     "sass-loader": "^4.0.2",
     "shim-webpack-require-for-node-tests": "^1.0.1",
     "style-loader": "^0.13.1",

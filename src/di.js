@@ -1,5 +1,4 @@
 import * as helpers from './di-helpers';
-import td from 'testdouble'
 
 const _appDependencies = new Map();
 
@@ -12,10 +11,10 @@ export function getDependencies(){
 }
 
 export function addDependency(dependency){
-  const isTesting = process.env.NODE_ENV ? process.env.NODE_ENV.toLowerCase() === 'testing' : false;
+  const dependencyAction = dependency.hasOwnProperty('action') ? dependency.action : dependency
 
   if(helpers.validateDependency(typeof dependency, dependency)){
-    _appDependencies.set(dependency.name, (dependency.hasOwnProperty('action')) ? dependency.action : dependency);
+    _appDependencies.set(dependency.name, dependencyAction);
   }
 }
 

@@ -16,7 +16,7 @@ const webpackConfig = getConfig({
 
 webpackConfig.resolve.alias = {
   di : path.resolve(__dirname, '../../index.js'),
-  components : path.resolve(__dirname, './src/components')
+  src : path.resolve(__dirname, './src')
 }
 
 
