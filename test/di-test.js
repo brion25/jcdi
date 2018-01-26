@@ -1,56 +1,52 @@
 import test from 'tape';
-import {
-  addDependencies,
-  addDependency,
-  invoke,
-  size,
-  getDependency
-} from '../src/di';
-
-import * as mocks from './mocks';
+import Di from '../src/di'
 
 test('DI class', t => {
-  t.equal(typeof addDependencies, 'function');
-  t.equal(typeof addDependency, 'function');
-  t.equal(typeof getDependency, 'function');
-  t.equal(typeof invoke, 'function');
+  t.ok(Di.hasOwnProperty('addGlobalDependency'));
+  t.ok(Di.hasOwnProperty('addGlobalDependencies'));
+  t.ok(Di.hasOwnProperty('getGlobalDependency'));
+
+  const di = new Di();
+
+  t.ok(di.hasOwnProperty('addDependency'));
+  t.ok(di.hasOwnProperty('addDependencies'));
+  t.ok(di.hasOwnProperty('getDependency'));
 
   t.end();
-})
+});
 
-test('di.addDependencies', t => {
-  const dependencies = [ mocks.multiply, mocks.divide ];
+test('Di.addDependency', t => {
+  Di.addGlobalDependency('d', 12345);
 
-  addDependencies(dependencies)
+  t.equal(Di.getGlobalDependency('d'), 12345);
 
-  t.equal(size(), dependencies.length)
+  const di = new Di();
+  di.addDependency('b', 12345);
 
-  t.end();
-})
-
-test('di.addDependency', t => {
-  addDependency(mocks.multiply)
-  addDependency(mocks.divide)
-
-  t.equal(mocks.multiply.action, getDependency('multiply'))
-  t.equal(mocks.divide, getDependency('divide'))
+  t.equal(di.getDependency('b'), 12345);
 
   t.end();
-})
+});
 
-test('di.invoke', t => {
-  addDependency(mocks.multiply)
-  const multiply = invoke(['multiply', function(multiply) {
-    return multiply(5, 5)
-  }])
+test('Di.addDependencyObj', t => {
+  const staticObj = {
+    a: true,
+    b: 12345
+  };
+  Di.addGlobalDependencies(staticObj);
 
-  t.equal(mocks.multiply.action(5, 5), multiply())
+  t.equal(Di.getGlobalDependency('a'), staticObj.a);
+  t.equal(Di.getGlobalDependency('b'), staticObj.b);
 
-  t.end();
-})
+  const di = new Di();
+  const obj = {
+    c: 'hello',
+    d: () => {}
+  };
+  di.addDependencies(obj);
 
-test('di.getDependency', t => {
-  addDependency(mocks.multiply)
+  t.equal(di.getDependency('c'), obj.c);
+  t.equal(di.getDependency('d'), obj.d);
 
   t.end();
 })

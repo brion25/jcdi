@@ -1,37 +1,30 @@
-const Di = require('./../index.js');
+const Di = require('../src/di');
 
-/**
- * Function dependency
- */
-Di.addDependency(function plus(a,b){
-  return a+b;
+const di = new Di();
+
+//Adding Dependencies
+di.addDependency('multiply', function(a, b) {
+  return a * b;
 });
 
-/**
- * Object dependency
- */
-Di.addDependency({
-  name : 'minus',
-  action : (a,b) => a - b
-});
+Di.addGlobalDependency('greeting', function(name) {
+  return `Hello ${name}`;
+})
 
-/**
- * Booleans, Strings and Numbers are invalid dependencies
- */
-Di.addDependencies([true, 'Invalid', 25]);
+// controllers setup
+const controllerA = di.invoke(function(multiply) {
+  console.log(multiply(5,10))
+})
 
-var minificationProof = Di.invoke(['plus','minus',function(x,y){
-  this.val = 35;
+const controllerB = di.invoke(function(greeting) {
+  console.log(greeting('Jose'))
+})
 
-  console.log('Minification proof');
-  console.log(x(this.val,4));
-  console.log(y(5,this.val));
-}]);
+const controllerC = di.invoke(['multiply', 'greeting', function(mul, gtg) {
+  console.log(mul(2,8));
+  console.log(gtg('Chase'));
+}])
 
-var iFailInMinification = Di.invoke(function(plus){
-  console.log('Minification fail');
-  console.log(plus(5,5))
-});
-
-minificationProof();
-iFailInMinification();
+controllerA();
+controllerB();
+controllerC();

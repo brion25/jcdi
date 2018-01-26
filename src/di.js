@@ -1,54 +1,58 @@
-import * as helpers from './di-helpers';
+const helpers = require('./utils/helpers');
+const regex = require('./utils/regex');
 
-const _appDependencies = new Map();
+class Di {
+  constructor() {
+    this.dependencies = new Map();
 
+    this.addDependency = helpers.addDependency.bind(this, this.dependencies);
+    this.addDependencies = helpers.addDependencies.bind(this, this.dependencies);
+    this.getDependency = this.getDependency.bind(this);
+    this.invoke = this.invoke.bind(this);
+  }
 
-const EXTRACT_FUNC_PARAMS_REGEX = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
-const WHITE_SPACE_REGEX = /\s/g;
+  getDependency(dependencyName) {
+    let dependency = helpers.getDependency(this.dependencies, dependencyName);
 
-export function getDependencies(){
-  return _appDependencies
-}
+    if (!dependency) {
+      dependency = helpers.getDependency(Di.globalDependencies, dependencyName);
+    }
 
-export function addDependency(dependency){
-  const dependencyAction = dependency.hasOwnProperty('action') ? dependency.action : dependency
+    return dependency;
+  }
 
-  if(helpers.validateDependency(typeof dependency, dependency)){
-    _appDependencies.set(dependency.name, dependencyAction);
+  invoke(callback, context) {
+    let dependencies = null;
+
+    if (Array.isArray(callback)) {
+      dependencies = callback;
+      callback = dependencies.pop();
+    } else if (typeof callback === 'function') {
+      const cbStringify = callback.toString();
+      const params = regex.EXTRACT_FUNC_PARAMS_REGEX.exec(cbStringify)[1];
+
+      if (!params) {
+        return callback;
+      }
+
+      dependencies = params.split(',');
+    }
+
+    return () => callback.apply(context || callback, dependencies.map(dependencyName => {
+      const dependency = this.getDependency(dependencyName);
+
+      if (typeof dependency === 'function') {
+        return dependency.bind(context || callback)
+      }
+
+      return dependency
+    }))
   }
 }
 
-export function addDependencies(dependencies){
-  dependencies.forEach((dependency) => addDependency(dependency));
-}
+Di.globalDependencies = new Map();
+Di.addGlobalDependency = helpers.addDependency.bind(Di, Di.globalDependencies);
+Di.addGlobalDependencies = helpers.addDependencies.bind(Di, Di.globalDependencies);
+Di.getGlobalDependency = helpers.getDependency.bind(Di, Di.globalDependencies);
 
-export function getDependency(name){
-  return _appDependencies.get(name);
-}
-
-export function invoke(callback, context){
-  let dependencies = null;
-
-  if(!context) {
-    context = callback;
-  }
-
-  if(Array.isArray(callback)){
-    dependencies = callback;
-    callback = callback.pop();
-    return () => callback.apply(context, helpers.parseDependencies(dependencies, getDependency, context));
-  }else{
-    let cbStringify = callback.toString(),
-      params = EXTRACT_FUNC_PARAMS_REGEX.exec(cbStringify);
-
-    if(!params || !params[1]) return callback.bind(context || callback);
-    else params = params[1].replace(WHITE_SPACE_REGEX,'');
-
-    dependencies = helpers.parseDependencies(params, getDependency, context);
-    return () => callback.apply(context || callback,dependencies);
-  }
-}
-
-export function size() {
-  return _appDependencies.size
-}
+module.exports = Di;
